@@ -60,7 +60,7 @@ public sealed class GatewayHandler :  IGatewayHandler
 
     public async Task<string> HandleCreatePairingInvite(Gateway gateway)
     {
-        var endpoint = $"{_cleanupBaseUrl(gateway.Address)}/device/paring/invites";
+        var endpoint = $"{_cleanupBaseUrl(gateway.Address)}/device/pairing/invites";
         
         var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", gateway.Token);
@@ -74,7 +74,7 @@ public sealed class GatewayHandler :  IGatewayHandler
 
     public async Task<List<Device>> HandleRegisteredDevices(Gateway gateway)
     {
-        var endpoint = $"{_cleanupBaseUrl(gateway.Address)}/device/paring/devices";
+        var endpoint = $"{_cleanupBaseUrl(gateway.Address)}/device/pairing/devices";
         
         var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", gateway.Token);
