@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Kori.Views.MainWindowView"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/Images/logo.ico"
+        Icon="/Assets/Images/logo-32.png"
         Width="1280" Height="800"
         Background="{DynamicResource Brush.Neutral}"
         Title="{Binding Title , Mode=OneTime}"

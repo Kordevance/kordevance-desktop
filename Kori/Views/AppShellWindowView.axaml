@@ -26,7 +26,7 @@
                 <StackPanel Grid.Row="0" Orientation="Vertical">
 
                     <StackPanel Orientation="Horizontal" Spacing="10" Margin="20,24,20,20">
-                        <Image Source="avares://Kori/Assets/Images/logo_mark.png"
+                        <Image Source="avares://Kori/Assets/Images/logo-128.png"
                                Height="34"
                                Stretch="Uniform"
                                VerticalAlignment="Center"/>
