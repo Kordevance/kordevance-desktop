@@ -373,7 +373,7 @@ public sealed class GatewayHandler :  IGatewayHandler
     {
         var endpoint = $"{_cleanupBaseUrl(gateway.Address)}/goals/{goal.Id}";
         
-        var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+        var request = new HttpRequestMessage(HttpMethod.Delete, endpoint);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", gateway.Token);
         request.Headers.Add("X-Profile-Id", profileId);
         
