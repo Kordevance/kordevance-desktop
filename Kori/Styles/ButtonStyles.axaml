@@ -1,0 +1,111 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Primary Rounded Button Style -->
+    <Style Selector="Button.PrimaryRounded">
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Primary}" />
+        <Setter Property="BorderBrush" Value="#6FCBA0" />
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="Button.PrimaryRounded:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.Primary}" />
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <!-- End Primary Rounded Button Style -->
+    
+    <!-- Secondary Rounded Button Style -->
+    <Style Selector="Button.SecondaryRounded">
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Danger}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+    </Style>
+    
+    <Style Selector="Button.SecondaryRounded:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Danger}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+    </Style>
+    <!-- End Secondary Rounded Button Style -->
+    
+    <!-- Text Button Style -->
+    <Style Selector="Button.TextButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text.Secondary}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    
+    <Style Selector="Button.TextButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text.Primary}"/>
+        <Setter Property="Background" Value="Transparent"></Setter>
+    </Style>
+    <!-- End Text Button Style -->
+    
+    <!-- Nav Item Button Style -->
+    <Style Selector="Button.NavItem">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text.Primary}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style Selector="Button.NavItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.Tertiary}"/>
+    </Style>
+
+    <Style Selector="Button.NavItem:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text.Primary}"/>
+    </Style>
+
+    <Style Selector="Button.NavItem.Active">
+        <Setter Property="Background" Value="{DynamicResource Brush.Tertiary.Light}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Tertiary}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style Selector="Button.NavItem.Active:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.Tertiary.Light}"/>
+    </Style>
+
+    <Style Selector="Button.NavItem.Active:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Tertiary}"/>
+    </Style>
+    <!-- End Nav Item Button Style -->
+
+    <!-- Hero Button Style -->
+    <Style Selector="Button.Hero">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="999"/>
+        <Setter Property="Padding" Value="20 10"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="#AEB7D8"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="#2E3F6F"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Height" Value="45"/>
+    </Style>
+
+    <Style Selector="Button.Hero:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#162040"/>
+        <Setter Property="TextElement.Foreground" Value="White"/>
+    </Style>
+
+    <Style Selector="Button.Hero.Active /template/ ContentPresenter">
+        <Setter Property="Background" Value="#C8D8F8"/>
+        <Setter Property="TextElement.Foreground" Value="#0E1F4D"/>
+    </Style>
+    <!-- End Hero Button Style -->
+    
+</Styles>

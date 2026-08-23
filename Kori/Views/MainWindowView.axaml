@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Kori.ViewModels"
+        xmlns:vv="clr-namespace:Kori.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Kori.Views.MainWindowView"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/Images/logo.ico"
+        Width="1280" Height="800"
+        Background="{DynamicResource Brush.Neutral}"
+        Title="{Binding Title , Mode=OneTime}"
+        x:CompileBindings="False">
+        
+        <Window.DataTemplates>
+                <DataTemplate DataType="vm:GatewayRegistrationWindowViewModel">
+                        <vv:GatewayRegistrationWindowView />
+                </DataTemplate>
+        
+                <DataTemplate DataType="vm:AppShellWindowViewModel">
+                        <vv:AppShellWindowView />
+                </DataTemplate>
+
+                <DataTemplate DataType="vm:SelectProfileWindowViewModel">
+                        <vv:SelectProfileWindowView />
+                </DataTemplate>
+
+                <DataTemplate DataType="vm:ConnectionErrorWindowViewModel">
+                        <vv:ConnectionErrorWindowView />
+                </DataTemplate>
+        </Window.DataTemplates>
+        
+        <TransitioningContentControl Content="{Binding CurrentView}">
+                <TransitioningContentControl.PageTransition>
+                        <CrossFade Duration="0:0:0.25" />
+                </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+
+</Window>
