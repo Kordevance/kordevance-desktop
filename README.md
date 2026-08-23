@@ -1,1 +1,1 @@
-# kordevance-desktop
+# KORI
