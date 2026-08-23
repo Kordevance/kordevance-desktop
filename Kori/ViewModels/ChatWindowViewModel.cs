@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -72,7 +73,7 @@ public partial class ChatWindowViewModel : ViewModelBase
             var conversations = await _gatewayHandler.HandleGetAllChats(gateway, profile.Id);
 
             Conversations.Clear();
-            foreach (var conversation in conversations)
+            foreach (var conversation in conversations.OrderByDescending(c => c.Timestamp))
             {
                 Conversations.Add(conversation);
             }
@@ -150,22 +151,31 @@ public partial class ChatWindowViewModel : ViewModelBase
                 return;
             }
 
+            var now = DateTimeOffset.UtcNow;
+
             if (SelectedConversation is null)
             {
                 var id = Guid.TryParse(result.ConversationId, out var parsed) ? parsed : Guid.NewGuid();
-                var conversation = new Conversation { Id = id, Messages = new List<ChatTurn>() };
-                Append(conversation, text, result);
+                var conversation = new Conversation { Id = id, Messages = new List<ChatTurn>(), Timestamp = now };
+                Append(conversation, text, result, now);
                 Conversations.Insert(0, conversation);
                 SelectedConversation = conversation;
             }
             else
             {
                 Bubbles.Remove(pendingTurn);
-                Append(SelectedConversation, text, result);
+                Append(SelectedConversation, text, result, now);
+                SelectedConversation.Timestamp = now;
                 Bubbles.Clear();
                 foreach (var turn in SelectedConversation.Messages)
                 {
                     Bubbles.Add(turn);
+                }
+
+                var index = Conversations.IndexOf(SelectedConversation);
+                if (index > 0)
+                {
+                    Conversations.Move(index, 0);
                 }
             }
         }
@@ -184,16 +194,16 @@ public partial class ChatWindowViewModel : ViewModelBase
         }
     }
 
-    private static void Append(Conversation conversation, string sentMessage, Chat result)
+    private static void Append(Conversation conversation, string sentMessage, Chat result, DateTimeOffset timestamp)
     {
         if (!string.IsNullOrWhiteSpace(sentMessage))
         {
-            conversation.Messages.Add(new ChatTurn { Role = ChatRole.User, Content = sentMessage });
+            conversation.Messages.Add(new ChatTurn { Role = ChatRole.User, Content = sentMessage, Timestamp = timestamp });
         }
 
         if (!string.IsNullOrWhiteSpace(result.Reply))
         {
-            conversation.Messages.Add(new ChatTurn { Role = ChatRole.Assistant, Content = result.Reply! });
+            conversation.Messages.Add(new ChatTurn { Role = ChatRole.Assistant, Content = result.Reply!, Timestamp = timestamp });
         }
     }
 }

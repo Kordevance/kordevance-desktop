@@ -13,19 +13,15 @@ public enum ChatRole
 
 public sealed class ChatTurn
 {
-    [JsonPropertyName("role")]
     public ChatRole Role { get; set; }
-
-    [JsonPropertyName("content")]
     public string Content { get; set; } = string.Empty;
+    public DateTimeOffset Timestamp { get; set; }
 }
 
 public sealed class Conversation
 {
-    [JsonPropertyName("id")]
     public Guid Id { get; set; }
-
-    [JsonPropertyName("messages")]
     public List<ChatTurn> Messages { get; set; } = new();
+    public DateTimeOffset Timestamp { get; set; }
 }
 

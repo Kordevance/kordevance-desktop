@@ -310,7 +310,7 @@ public sealed class GatewayHandler :  IGatewayHandler
         var content = await response.Content.ReadFromJsonAsync<ConversationsResponse>();
         if (content is null) return [];
         
-        return content.Conversations.Select(c => new Conversation{Id = c.Id, Messages = c.Messages}).ToList();
+        return content.Conversations.Select(c => new Conversation{Id = c.Id, Messages = c.Messages, Timestamp = c.Timestamp}).ToList();
     }
 
     public async Task<List<Connector>> HandleGetAllConnectors(Gateway gateway, string profileId)
