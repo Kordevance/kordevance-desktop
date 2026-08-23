@@ -37,7 +37,8 @@ public static class ServiceCollectionExtensions
             builder.AddHttpMessageHandler<HttpLoggingDelegate>();
             builder.AddHttpMessageHandler<NetworkErrorDelegate>();
         });
-        
+
+        services.AddSingleton<AppVersioning>();
         services.AddSingleton<SessionContext>();
         services.AddTransient<IGatewayHandler, GatewayHandler>();
         

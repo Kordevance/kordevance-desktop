@@ -2,6 +2,7 @@ using Avalonia;
 using System;
 using System.Threading.Tasks;
 using Serilog;
+using Velopack;
 
 namespace Kori;
 
@@ -10,6 +11,8 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        VelopackApp.Build().Run();
+        
         Logging.Configure();
         HookGlobalExceptionHandlers();
 
