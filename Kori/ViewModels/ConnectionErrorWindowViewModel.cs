@@ -8,11 +8,13 @@ public partial class ConnectionErrorWindowViewModel : ViewModelBase
 {
     private readonly INavigationHandler _navigationHandler;
     private readonly ViewFactory _viewFactory;
+    private readonly SessionContext _sessionContext;
 
-    public ConnectionErrorWindowViewModel(INavigationHandler navigationHandler, ViewFactory viewFactory)
+    public ConnectionErrorWindowViewModel(INavigationHandler navigationHandler, ViewFactory viewFactory, SessionContext sessionContext)
     {
         _navigationHandler = navigationHandler;
         _viewFactory = viewFactory;
+        _sessionContext = sessionContext;
     }
 
     [RelayCommand]
@@ -20,5 +22,13 @@ public partial class ConnectionErrorWindowViewModel : ViewModelBase
     {
         _navigationHandler.ClearBackStack();
         _navigationHandler.NavigateTo(_viewFactory.GetView<MainWindowViewModel>());
+    }
+
+    [RelayCommand]
+    private void Logout()
+    {
+        _sessionContext.Logout();
+        _navigationHandler.ClearBackStack();
+        _navigationHandler.NavigateTo(_viewFactory.GetView<GatewayRegistrationWindowViewModel>());
     }
 }

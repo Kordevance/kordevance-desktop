@@ -42,11 +42,8 @@ public sealed class SessionContext
 
     public void Logout()
     {   
-        // TODO: Feature: Implement
-        // NOTE: Not yet supported
-        // _store.Delete(GatewayKey);
-        // Gateway = null;
-        
+        _store.Delete(GatewayKey);
+        Gateway = null;
         Profile = null;
     }
 }

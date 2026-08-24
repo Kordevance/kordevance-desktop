@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading;
@@ -23,7 +24,14 @@ public sealed class NetworkErrorDelegate : DelegatingHandler
     {
         try
         {
-            return await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
+
+            if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Unauthorized)
+            {
+                _navigationHandler.NavigateTo(_viewFactory.GetView<ConnectionErrorWindowViewModel>(), keepTrack: false);
+            }
+
+            return response;
         }
         catch (HttpRequestException ex) when (IsNetworkUnreachable(ex))
         {

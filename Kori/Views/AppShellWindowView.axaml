@@ -101,7 +101,7 @@
                                 Command="{Binding SwitchPageCommand}"
                                 CommandParameter="{x:Static se:AppShellPages.Providers}">
                             <StackPanel Orientation="Horizontal" Spacing="12">
-                                <ic:MaterialIcon Kind="Api" IconSize="18"/>
+                                <ic:MaterialIcon Kind="Code" IconSize="18"/>
                                 <TextBlock Text="{root:Localize AppShell.Providers}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
