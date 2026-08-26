@@ -30,12 +30,14 @@ public static class ServiceCollectionExtensions
         
         services.AddTransient<HttpLoggingDelegate>();
         services.AddTransient<NetworkErrorDelegate>();
+        services.AddTransient<TimezoneHeaderDelegate>();
 
         services.ConfigureHttpClientDefaults(builder =>
         {
             builder.RemoveAllLoggers();
             builder.AddHttpMessageHandler<HttpLoggingDelegate>();
             builder.AddHttpMessageHandler<NetworkErrorDelegate>();
+            builder.AddHttpMessageHandler<TimezoneHeaderDelegate>();
         });
 
         services.AddSingleton<AppVersioning>();
