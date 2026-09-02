@@ -1,0 +1,485 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:ic="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:conv="clr-namespace:Kori.Converters"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:objconv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="Kori.Views.ProvidersWindowView"
+             x:DataType="vm:ProvidersWindowViewModel"
+             x:CompileBindings="False">
+
+    <Grid Background="{DynamicResource Brush.Neutral}">
+        <ScrollViewer>
+            <StackPanel Margin="32" Spacing="24">
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{root:Localize Providers.Title}"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.Text.Primary}"/>
+                    
+                    <TextBlock Text="{root:Localize Providers.Subtitle}"
+                               FontSize="14"
+                               Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                </StackPanel>
+
+                <ItemsControl x:Name="KnownProvidersList" ItemsSource="{Binding KnownProviders}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="16"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource Brush.Surface}"
+                                    CornerRadius="12"
+                                    Padding="20">
+                                <StackPanel Spacing="16">
+
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <Border Grid.Column="0"
+                                                Width="40"
+                                                Height="40"
+                                                CornerRadius="10"
+                                                Background="White"
+                                                Padding="8">
+                                            <Image asyncImageLoader:ImageLoader.Source="{Binding IconUrl}"
+                                                   Stretch="Uniform"/>
+                                        </Border>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DisplayName}"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource Brush.Text.Primary}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="12,0,0,0"/>
+
+                                        <StackPanel Grid.Column="2"
+                                                    Orientation="Horizontal"
+                                                    Spacing="12"
+                                                    IsVisible="{Binding IsConfigured}">
+                                            <Border Background="{DynamicResource Brush.Secondary}"
+                                                    CornerRadius="12"
+                                                    Padding="10,4"
+                                                    VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Ellipse Width="6" Height="6" Fill="{DynamicResource Brush.Primary}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{root:Localize Providers.Configured}"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource Brush.Primary}"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Button Content="{root:Localize Providers.Remove}"
+                                                    BorderThickness="1"
+                                                    Classes="SecondaryRounded"
+                                                    CornerRadius="6"
+                                                    Padding="14,6"
+                                                    Command="{Binding ElementName=KnownProvidersList, Path=DataContext.RemoveCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="2"
+                                                Content="{root:Localize Providers.Add}"
+                                                IsVisible="{Binding !IsConfigured}"
+                                                IsEnabled="{Binding !IsAdding}"
+                                                Classes="PrimaryRounded"
+                                                CornerRadius="6"
+                                                Padding="14,6"
+                                                Command="{Binding ElementName=KnownProvidersList, Path=DataContext.ShowAddFormCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+
+                                    <StackPanel Spacing="10" IsVisible="{Binding IsAdding}">
+                                        <TextBox Text="{Binding ApiKeyInput}"
+                                                 PlaceholderText="{root:Localize Providers.ApiKeyPlaceholder}"
+                                                 Classes="Default"
+                                                 Padding="12,10"
+                                                 FontSize="14"
+                                                 CornerRadius="6"
+                                                 BorderBrush="#D0D0D5"
+                                                 BorderThickness="1"
+                                                 PasswordChar="•"/>
+
+                                        <TextBox Text="{Binding EndpointInput}"
+                                                 PlaceholderText="{root:Localize Providers.EndpointPlaceholder}"
+                                                 Classes="Default"
+                                                 Padding="12,10"
+                                                 FontSize="14"
+                                                 CornerRadius="6"
+                                                 BorderBrush="#D0D0D5"
+                                                 BorderThickness="1"/>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                                            <Button Content="{root:Localize Providers.Cancel}"
+                                                    Classes="TextButton"
+                                                    Padding="12,8"
+                                                    Command="{Binding ElementName=KnownProvidersList, Path=DataContext.CancelAddCommand}"
+                                                    CommandParameter="{Binding}"/>
+
+                                            <Button Content="{root:Localize Providers.Confirm}"
+                                                    Classes="PrimaryRounded"
+                                                    CornerRadius="6"
+                                                    Padding="16,8"
+                                                    Command="{Binding ElementName=KnownProvidersList, Path=DataContext.ConfirmAddCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Border Grid.Column="0"
+                                    Width="40"
+                                    Height="40"
+                                    CornerRadius="10"
+                                    Background="White">
+                                <ic:MaterialIcon Kind="DotsHorizontal"
+                                                 IconSize="20"
+                                                 Foreground="{DynamicResource Brush.Tertiary}"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                            </Border>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="{root:Localize Providers.Other}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                       VerticalAlignment="Center"
+                                       Margin="12,0,0,0"/>
+
+                            <Button Grid.Column="2"
+                                    Content="{root:Localize Providers.Add}"
+                                    IsEnabled="{Binding !IsAddingOther}"
+                                    Classes="PrimaryRounded"
+                                    CornerRadius="6"
+                                    Padding="14,6"
+                                    Command="{Binding ShowAddOtherCommand}"/>
+                        </Grid>
+
+                        <StackPanel Spacing="10"
+                                    IsVisible="{Binding OtherProviders.Count, Converter={x:Static conv:IsZeroConverter.Instance}}">
+                            <TextBlock Text="{root:Localize Providers.Other.Empty}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="OtherProvidersList" ItemsSource="{Binding OtherProviders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="8"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Name}"
+                                                   FontSize="14"
+                                                   Foreground="{DynamicResource Brush.Text.Primary}"
+                                                   VerticalAlignment="Center"/>
+
+                                        <Button Grid.Column="1"
+                                                Content="{root:Localize Providers.Remove}"
+                                                BorderThickness="1"
+                                                Classes="SecondaryRounded"
+                                                CornerRadius="6"
+                                                Padding="14,6"
+                                                Command="{Binding ElementName=OtherProvidersList, Path=DataContext.RemoveOtherCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <StackPanel Spacing="10" IsVisible="{Binding IsAddingOther}">
+                            <TextBox Text="{Binding OtherNameInput}"
+                                     PlaceholderText="{root:Localize Providers.NamePlaceholder}"
+                                     Classes="Default"
+                                     Padding="12,10"
+                                     FontSize="14"
+                                     CornerRadius="6"
+                                     BorderBrush="#D0D0D5"
+                                     BorderThickness="1"/>
+
+                            <TextBox Text="{Binding OtherApiKeyInput}"
+                                     PlaceholderText="{root:Localize Providers.ApiKeyPlaceholder}"
+                                     Classes="Default"
+                                     Padding="12,10"
+                                     FontSize="14"
+                                     CornerRadius="6"
+                                     BorderBrush="#D0D0D5"
+                                     BorderThickness="1"
+                                     PasswordChar="•"/>
+
+                            <TextBox Text="{Binding OtherEndpointInput}"
+                                     PlaceholderText="{root:Localize Providers.EndpointPlaceholder}"
+                                     Classes="Default"
+                                     Padding="12,10"
+                                     FontSize="14"
+                                     CornerRadius="6"
+                                     BorderBrush="#D0D0D5"
+                                     BorderThickness="1"/>
+
+                            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                                <Button Content="{root:Localize Providers.Cancel}"
+                                        Classes="TextButton"
+                                        Padding="12,8"
+                                        Command="{Binding CancelAddOtherCommand}"/>
+
+                                <Button Content="{root:Localize Providers.Confirm}"
+                                        Classes="PrimaryRounded"
+                                        CornerRadius="6"
+                                        Padding="16,8"
+                                        Command="{Binding ConfirmAddOtherCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{root:Localize ModelAssignments.Title}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            <TextBlock Text="{root:Localize ModelAssignments.Subtitle}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding ModelAssignments}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="16"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Spacing="12">
+                                        <Border Height="1" Background="{DynamicResource Brush.Neutral}"/>
+
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackPanel Grid.Column="0" Spacing="4">
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <TextBlock Text="{Binding Title}"
+                                                               FontSize="15"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource Brush.Text.Primary}"
+                                                               VerticalAlignment="Center"/>
+
+                                                    <Border Background="{DynamicResource Brush.Danger}"
+                                                            CornerRadius="8"
+                                                            Padding="8,2"
+                                                            IsVisible="{Binding IsRequired}">
+                                                        <TextBlock Text="{root:Localize ModelAssignments.Required}"
+                                                                   FontSize="10"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="White"
+                                                                   Padding="2"/>
+                                                    </Border>
+
+                                                    <Border Background="{DynamicResource Brush.Neutral}"
+                                                            CornerRadius="8"
+                                                            Padding="8,2"
+                                                            IsVisible="{Binding !IsRequired}">
+                                                        <TextBlock Text="{root:Localize ModelAssignments.Optional}"
+                                                                   FontSize="10"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource Brush.Text.Secondary}"
+                                                                   Padding="2"/>
+                                                    </Border>
+
+                                                    <Button Command="{Binding ShowInfoCommand}"
+                                                            Classes="TextButton"
+                                                            Background="Transparent"
+                                                            Padding="2"
+                                                            Cursor="Hand"
+                                                            VerticalAlignment="Center">
+                                                        <ic:MaterialIcon Kind="InformationOutline"
+                                                                         IconSize="16"
+                                                                         Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                                                    </Button>
+                                                </StackPanel>
+
+                                                <TextBlock Text="{Binding ProviderName}"
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource Brush.Text.Secondary}"
+                                                           IsVisible="{Binding IsAssigned}"/>
+                                                <TextBlock Text="{Binding ModelId}"
+                                                           FontSize="13"
+                                                           FontWeight="Medium"
+                                                           Foreground="{DynamicResource Brush.Primary}"
+                                                           IsVisible="{Binding IsAssigned}"/>
+                                                <TextBlock Text="{root:Localize ModelAssignments.NotSet}"
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource Brush.Text.Secondary}"
+                                                           IsVisible="{Binding !IsAssigned}"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Top">
+                                                <Button Content="{root:Localize ModelAssignments.Clear}"
+                                                        IsVisible="{Binding IsAssigned}"
+                                                        Classes="TextButton"
+                                                        Foreground="{DynamicResource Brush.Danger}"
+                                                        Padding="8,6"
+                                                        Command="{Binding ClearCommand}"/>
+
+                                                <Button Content="{root:Localize ModelAssignments.Change}"
+                                                        IsVisible="{Binding IsAssigned}"
+                                                        BorderThickness="1"
+                                                        Classes="SecondaryRounded"
+                                                        CornerRadius="6"
+                                                        Padding="14,6"
+                                                        Command="{Binding ShowPickerCommand}"/>
+
+                                                <Button Content="{root:Localize ModelAssignments.Set}"
+                                                        IsVisible="{Binding !IsAssigned}"
+                                                        Classes="PrimaryRounded"
+                                                        CornerRadius="6"
+                                                        Padding="14,6"
+                                                        Command="{Binding ShowPickerCommand}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <StackPanel Spacing="10" IsVisible="{Binding IsPicking}">
+                                            <TextBlock Text="{root:Localize ModelAssignments.SelectProvider}"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource Brush.Text.Secondary}"/>
+
+                                            <ItemsControl x:Name="ProviderChipsList" ItemsSource="{Binding ConfiguredProviders}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding Name}"
+                                                                Classes="SecondaryRounded"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="12,6"
+                                                                Margin="0,0,8,8"
+                                                                Command="{Binding ElementName=ProviderChipsList, Path=DataContext.SelectProviderCommand}"
+                                                                CommandParameter="{Binding}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <TextBlock Text="{Binding PickerProvider.Name, StringFormat='Selected: {0}'}"
+                                                       FontSize="12"
+                                                       FontWeight="Medium"
+                                                       Foreground="{DynamicResource Brush.Tertiary}"
+                                                       IsVisible="{Binding PickerProvider, Converter={x:Static objconv:ObjectConverters.IsNotNull}}"/>
+
+                                            <TextBlock Text="{root:Localize ModelAssignments.SelectModel}"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource Brush.Text.Secondary}"
+                                                       IsVisible="{Binding PickerProvider, Converter={x:Static objconv:ObjectConverters.IsNotNull}}"/>
+
+                                            <ItemsControl x:Name="ModelChipsList" ItemsSource="{Binding AvailableModels}"
+                                                          IsVisible="{Binding !NoModelsFound}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding}"
+                                                                Classes="SecondaryRounded"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="12,6"
+                                                                Margin="0,0,8,8"
+                                                                Command="{Binding ElementName=ModelChipsList, Path=DataContext.SelectModelCommand}"
+                                                                CommandParameter="{Binding}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <StackPanel Spacing="8" IsVisible="{Binding NoModelsFound}">
+                                                <TextBlock Text="{root:Localize ModelAssignments.NoModelsFound}"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource Brush.Text.Secondary}"/>
+
+                                                <Grid ColumnDefinitions="*,Auto" x:Name="ManualModelGrid">
+                                                    <TextBox Grid.Column="0"
+                                                             Text="{Binding ManualModelInput}"
+                                                             PlaceholderText="{root:Localize ModelAssignments.ManualModelPlaceholder}"
+                                                             Classes="Default"
+                                                             Padding="12,10"
+                                                             FontSize="14"
+                                                             CornerRadius="6"
+                                                             BorderBrush="#D0D0D5"
+                                                             BorderThickness="1"/>
+
+                                                    <Button Grid.Column="1"
+                                                            Content="{root:Localize ModelAssignments.Use}"
+                                                            Classes="SecondaryRounded"
+                                                            BorderThickness="1"
+                                                            CornerRadius="6"
+                                                            Padding="14,6"
+                                                            Margin="8,0,0,0"
+                                                            Command="{Binding UseManualModelCommand}"/>
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <TextBlock Text="{Binding PickerModel, StringFormat='Selected: {0}'}"
+                                                       FontSize="12"
+                                                       FontWeight="Medium"
+                                                       Foreground="{DynamicResource Brush.Primary}"
+                                                       IsVisible="{Binding PickerModel, Converter={x:Static objconv:ObjectConverters.IsNotNull}}"/>
+
+                                            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                                                <Button Content="{root:Localize Providers.Cancel}"
+                                                        Classes="TextButton"
+                                                        Padding="12,8"
+                                                        Command="{Binding CancelPickerCommand}"/>
+
+                                                <Button Content="{root:Localize Providers.Confirm}"
+                                                        Classes="PrimaryRounded"
+                                                        CornerRadius="6"
+                                                        Padding="16,8"
+                                                        Command="{Binding ConfirmCommand}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>

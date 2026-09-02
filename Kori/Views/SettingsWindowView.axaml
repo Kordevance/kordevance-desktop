@@ -1,0 +1,275 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:ic="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:conv="clr-namespace:Kori.Converters"
+             xmlns:objconv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="Kori.Views.SettingsWindowView"
+             x:DataType="vm:SettingsWindowViewModel"
+             x:CompileBindings="False">
+
+    <Grid Background="{DynamicResource Brush.Neutral}">
+        <ScrollViewer>
+            <StackPanel Margin="32" Spacing="24">
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{root:Localize Settings.Title}"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.Text.Primary}"/>
+
+                    <TextBlock Text="{root:Localize Settings.Subtitle}"
+                               FontSize="14"
+                               Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                </StackPanel>
+
+                <!-- Profile -->
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="White">
+                                <ic:MaterialIcon Kind="AccountOutline"
+                                                 IconSize="20"
+                                                 Foreground="{DynamicResource Brush.Tertiary}"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{root:Localize Settings.Profile.Title}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource Brush.Neutral}"/>
+
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Grid.Column="0"
+                                       Text="{root:Localize Settings.Profile.Name}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding ProfileName}"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Gateway -->
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="White">
+                                <ic:MaterialIcon Kind="RouterWireless"
+                                                 IconSize="20"
+                                                 Foreground="{DynamicResource Brush.Tertiary}"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{root:Localize Settings.Gateway.Title}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                       VerticalAlignment="Center"/>
+
+                            <Border Background="{DynamicResource Brush.Secondary}"
+                                    CornerRadius="12"
+                                    Padding="10,4"
+                                    VerticalAlignment="Center"
+                                    Margin="8,0,0,0">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <Ellipse Width="6" Height="6" Fill="{DynamicResource Brush.Primary}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{root:Localize Settings.Gateway.Connected}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource Brush.Primary}"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource Brush.Neutral}"/>
+
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Grid.Column="0"
+                                       Text="{root:Localize Settings.Gateway.Address}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding GatewayAddress}"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Pairing -->
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{root:Localize Settings.Pairing.Title}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            <TextBlock Text="{root:Localize Settings.Pairing.Subtitle}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource Brush.Neutral}"/>
+
+                        <StackPanel Orientation="Horizontal" Spacing="12" IsVisible="{Binding PairingCode, Converter={x:Static objconv:ObjectConverters.IsNull}}">
+                            <Button Content="{root:Localize Settings.Pairing.Generate}"
+                                    IsEnabled="{Binding !IsGeneratingPairingCode}"
+                                    Classes="PrimaryRounded"
+                                    CornerRadius="6"
+                                    Padding="16,8"
+                                    Command="{Binding CreatePairingCodeCommand}"/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*,Auto,Auto" IsVisible="{Binding PairingCode, Converter={x:Static objconv:ObjectConverters.IsNotNull}}">
+                            <Border Grid.Column="0"
+                                    Background="White"
+                                    CornerRadius="8"
+                                    BorderBrush="#D0D0D5"
+                                    BorderThickness="1"
+                                    Padding="14,10">
+                                <TextBlock Text="{Binding PairingCode}"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           FontFamily="Consolas,Menlo,monospace"
+                                           LetterSpacing="2"
+                                           Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            </Border>
+
+                            <Button Grid.Column="1"
+                                    Content="{root:Localize Settings.Pairing.Copy}"
+                                    Classes="SecondaryRounded"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="14,10"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding CopyPairingCodeCommand}"/>
+
+                            <Button Grid.Column="2"
+                                    Content="{root:Localize Settings.Pairing.Generate}"
+                                    IsEnabled="{Binding !IsGeneratingPairingCode}"
+                                    Classes="TextButton"
+                                    Padding="14,10"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding CreatePairingCodeCommand}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Devices -->
+                <Border Background="{DynamicResource Brush.Surface}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{root:Localize Settings.Devices.Title}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            <TextBlock Text="{root:Localize Settings.Devices.Subtitle}"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource Brush.Neutral}"/>
+
+                        <TextBlock Text="{root:Localize Settings.Devices.Empty}"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource Brush.Text.Secondary}"
+                                   IsVisible="{Binding Devices.Count, Converter={x:Static conv:IsZeroConverter.Instance}}"/>
+
+                        <ItemsControl x:Name="DevicesList" ItemsSource="{Binding Devices}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="8"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White"
+                                            CornerRadius="10"
+                                            Padding="14,12"
+                                            BorderBrush="#E5E5E7"
+                                            BorderThickness="1">
+                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                            <Border Grid.Column="0"
+                                                    Width="36"
+                                                    Height="36"
+                                                    CornerRadius="8"
+                                                    Background="{DynamicResource Brush.Neutral}">
+                                                <ic:MaterialIcon Kind="Laptop"
+                                                                 IconSize="18"
+                                                                 Foreground="{DynamicResource Brush.Text.Secondary}"
+                                                                 HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <TextBlock Text="{Binding Id}"
+                                                               FontSize="14"
+                                                               FontWeight="Medium"
+                                                               Foreground="{DynamicResource Brush.Text.Primary}"/>
+
+                                                    <Border Background="{DynamicResource Brush.Secondary}"
+                                                            CornerRadius="8"
+                                                            Padding="8,2"
+                                                            IsVisible="{Binding IsOwner}">
+                                                        <TextBlock Text="{root:Localize Settings.Devices.Owner}"
+                                                                   FontSize="10"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource Brush.Primary}"/>
+                                                    </Border>
+                                                </StackPanel>
+
+                                                <TextBlock Text="{Binding CreatedAt, StringFormat='Connected {0:MMM d, yyyy}'}"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                                            </StackPanel>
+
+                                            <Button Grid.Column="2"
+                                                    Content="{root:Localize Settings.Devices.Promote}"
+                                                    IsVisible="{Binding !IsOwner}"
+                                                    Classes="SecondaryRounded"
+                                                    BorderThickness="1"
+                                                    CornerRadius="6"
+                                                    Padding="14,6"
+                                                    VerticalAlignment="Center"
+                                                    Command="{Binding ElementName=DevicesList, Path=DataContext.PromoteDeviceCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>

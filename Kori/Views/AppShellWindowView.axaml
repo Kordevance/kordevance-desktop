@@ -1,0 +1,159 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:se="clr-namespace:Kori.Models"
+             xmlns:ic="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:conv="clr-namespace:Kori.Converters"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="800"
+             x:Class="Kori.Views.AppShellWindowView"
+             x:DataType="vm:AppShellWindowViewModel"
+             x:CompileBindings="False">
+
+    <Grid ColumnDefinitions="260,*">
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0"
+                Background="White"
+                BorderBrush="#E5E5E7"
+                BorderThickness="0,0,1,0">
+
+            <Grid RowDefinitions="Auto,*,Auto">
+
+                <!-- Header + nav -->
+                <StackPanel Grid.Row="0" Orientation="Vertical">
+
+                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="20,24,20,20">
+                        <Image Source="avares://Kori/Assets/Images/logo-128.png"
+                               Height="34"
+                               Stretch="Uniform"
+                               VerticalAlignment="Center"/>
+
+                        <StackPanel Orientation="Vertical" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Kori"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            <TextBlock Text="{root:Localize AppShell.Tagline}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource Brush.Text.Secondary}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Spacing="6" Margin="16,0,16,16">
+
+                        <Button Classes="NavItem"
+                                Classes.Active="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Connectors}"
+                                Command="{Binding SwitchPageCommand}"
+                                CommandParameter="{x:Static se:AppShellPages.Connectors}">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <ic:MaterialIcon Kind="Puzzle" IconSize="18"/>
+                                <TextBlock Text="{root:Localize AppShell.Connectors}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Classes="NavItem"
+                                Classes.Active="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Chat}"
+                                Command="{Binding SwitchPageCommand}"
+                                CommandParameter="{x:Static se:AppShellPages.Chat}">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <ic:MaterialIcon Kind="MessageOutline" IconSize="18"/>
+                                <TextBlock Text="{root:Localize AppShell.Chat}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Chat history sub-list -->
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="2"
+                                    Margin="30,2,0,0"
+                                    IsVisible="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Chat}">
+
+                            <Button Classes="NavItem"
+                                    Command="{Binding CurrentPageContent.StartNewChatCommand}"
+                                    Padding="8,6"
+                                    FontSize="13">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <ic:MaterialIcon Kind="Plus" IconSize="14"/>
+                                    <TextBlock Text="{root:Localize AppShell.NewChat}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <ItemsControl x:Name="ChatHistoryList" ItemsSource="{Binding CurrentPageContent.Conversations}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Classes="NavItem"
+                                                Command="{Binding ElementName=ChatHistoryList, Path=DataContext.CurrentPageContent.SelectConversationCommand}"
+                                                CommandParameter="{Binding}"
+                                                Padding="8,6"
+                                                FontSize="13">
+                                            <TextBlock Text="{Binding Converter={x:Static conv:ConversationTitleConverter.Instance}}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <Button Classes="NavItem"
+                                Classes.Active="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Providers}"
+                                Command="{Binding SwitchPageCommand}"
+                                CommandParameter="{x:Static se:AppShellPages.Providers}">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <ic:MaterialIcon Kind="Code" IconSize="18"/>
+                                <TextBlock Text="{root:Localize AppShell.Providers}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Classes="NavItem"
+                                Classes.Active="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Goals}"
+                                Command="{Binding SwitchPageCommand}"
+                                CommandParameter="{x:Static se:AppShellPages.Goals}">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <ic:MaterialIcon Kind="Flag" IconSize="18"/>
+                                <TextBlock Text="{root:Localize AppShell.Goals}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Classes="NavItem"
+                                Classes.Active="{Binding CurrentPage, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Settings}"
+                                Command="{Binding SwitchPageCommand}"
+                                CommandParameter="{x:Static se:AppShellPages.Settings}">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <ic:MaterialIcon Kind="Cog" IconSize="18"/>
+                                <TextBlock Text="{root:Localize AppShell.Settings}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Spacer -->
+                <Panel Grid.Row="1"/>
+
+                <!-- Logout -->
+                <StackPanel Grid.Row="2" Margin="16">
+                    <Border Height="1" Background="#E5E5E7" Margin="0,0,0,12"/>
+                    <Button Classes="NavItem"
+                            Command="{Binding LogoutCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <ic:MaterialIcon Kind="Logout" IconSize="18"/>
+                            <TextBlock Text="{root:Localize AppShell.Logout}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <TransitioningContentControl Grid.Column="1" Content="{Binding CurrentPageContent}">
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.2"/>
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+
+    </Grid>
+
+</UserControl>

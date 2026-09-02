@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Color x:Key="Color.Primary">#2DD4A0</Color>
+    <Color x:Key="Color.Secondary">#D6F5EA</Color>
+    <Color x:Key="Color.Tertiary">#5A67D8</Color>
+    <Color x:Key="Color.Tertiary.Light">#E9EBFB</Color>
+    <Color x:Key="Color.Neutral">#FAFAFA</Color>
+    <Color x:Key="Color.Surface">#F1F2F6</Color>
+    <Color x:Key="Color.Text.Primary">#000000</Color>
+    <Color x:Key="Color.Text.Secondary">#AAB3C5</Color>
+    <Color x:Key="Color.Danger">#D32F2F</Color>
+
+    <SolidColorBrush x:Key="Brush.Neutral" Color="{StaticResource Color.Neutral}"/>
+    <SolidColorBrush x:Key="Brush.Surface" Color="{StaticResource Color.Surface}"/>
+    <SolidColorBrush x:Key="Brush.Primary" Color="{StaticResource Color.Primary}"/>
+    <SolidColorBrush x:Key="Brush.Secondary" Color="{StaticResource Color.Secondary}"/>
+    <SolidColorBrush x:Key="Brush.Tertiary" Color="{StaticResource Color.Tertiary}"/>
+    <SolidColorBrush x:Key="Brush.Tertiary.Light" Color="{StaticResource Color.Tertiary.Light}"/>
+    <SolidColorBrush x:Key="Brush.Text.Primary" Color="{StaticResource Color.Text.Primary}"/>
+    <SolidColorBrush x:Key="Brush.Text.Secondary" Color="{StaticResource Color.Text.Secondary}"/>
+    <SolidColorBrush x:Key="Brush.Danger" Color="{StaticResource Color.Danger}"/>
+    
+</ResourceDictionary>

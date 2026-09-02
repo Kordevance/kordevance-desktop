@@ -1,0 +1,176 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:conv="clr-namespace:Kori.Converters"
+             xmlns:objconv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Kori.Views.ChatWindowView"
+             x:DataType="vm:ChatWindowViewModel"
+             x:CompileBindings="False"
+             x:Name="Root">
+
+    <UserControl.Styles>
+        <Style Selector="Ellipse.TypingDot">
+            <Style.Animations>
+                <Animation Duration="0:0:1" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="Opacity" Value="1"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Ellipse#Dot2.TypingDot">
+            <Style.Animations>
+                <Animation Duration="0:0:1" IterationCount="INFINITE" Delay="0:0:0.15">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="Opacity" Value="1"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Ellipse#Dot3.TypingDot">
+            <Style.Animations>
+                <Animation Duration="0:0:1" IterationCount="INFINITE" Delay="0:0:0.3">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="Opacity" Value="1"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0.25"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Background="{DynamicResource Brush.Neutral}" RowDefinitions="*,Auto" Margin="24">
+
+        <TextBlock Grid.Row="0"
+                   Text="{root:Localize Chat.EmptyState}"
+                   FontSize="16"
+                   Foreground="{DynamicResource Brush.Text.Secondary}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   IsVisible="{Binding Bubbles.Count, Converter={x:Static conv:IsZeroConverter.Instance}}"/>
+
+        <ScrollViewer Grid.Row="0"
+                      Name="MessagesScrollViewer"
+                      IsVisible="{Binding Bubbles.Count, Converter={x:Static conv:IsNotZeroConverter.Instance}}">
+            <StackPanel Orientation="Vertical" Spacing="12">
+                <ItemsControl ItemsSource="{Binding Bubbles}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="12"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Panel>
+                                <Border MaxWidth="480"
+                                        Padding="14,10"
+                                        CornerRadius="14"
+                                        Background="{DynamicResource Brush.Secondary}"
+                                        HorizontalAlignment="Right"
+                                        IsVisible="{Binding Role, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=User}">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{root:Localize Chat.Copy}"
+                                                      Command="{Binding #Root.DataContext.CopyMessageCommand}"
+                                                      CommandParameter="{Binding Content}"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+                                    <TextBlock Text="{Binding Content}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource Brush.Text.Primary}"/>
+                                </Border>
+
+                                <Border MaxWidth="480"
+                                        Padding="14,10"
+                                        CornerRadius="14"
+                                        Background="White"
+                                        BorderBrush="#E5E5E7"
+                                        BorderThickness="1"
+                                        HorizontalAlignment="Left"
+                                        IsVisible="{Binding Role, Converter={x:Static conv:EnumMatchConverter.Instance}, ConverterParameter=Assistant}">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{root:Localize Chat.Copy}"
+                                                      Command="{Binding #Root.DataContext.CopyMessageCommand}"
+                                                      CommandParameter="{Binding Content}"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+                                    <TextBlock Text="{Binding Content}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource Brush.Text.Primary}"/>
+                                </Border>
+                            </Panel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Border MaxWidth="480"
+                        Padding="14,10"
+                        CornerRadius="14"
+                        Background="White"
+                        BorderBrush="#E5E5E7"
+                        BorderThickness="1"
+                        HorizontalAlignment="Left"
+                        IsVisible="{Binding IsSending}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Brush.Text.Secondary}"
+                                 Classes="TypingDot" Name="Dot1"/>
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Brush.Text.Secondary}"
+                                 Classes="TypingDot" Name="Dot2"/>
+                        <Ellipse Width="6" Height="6" Fill="{DynamicResource Brush.Text.Secondary}"
+                                 Classes="TypingDot" Name="Dot3"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
+            <TextBox Grid.Column="0"
+                     Text="{Binding DraftMessage}"
+                     PlaceholderText="{root:Localize Chat.InputPlaceholder}"
+                     Classes="Default"
+                     Padding="12,10"
+                     FontSize="14"
+                     CornerRadius="6"
+                     BorderBrush="#D0D0D5"
+                     BorderThickness="1"
+                     AcceptsReturn="False"
+                     KeyDown="OnDraftMessageKeyDown"/>
+
+            <Button Grid.Column="1"
+                    Content="{root:Localize Chat.Send}"
+                    Command="{Binding SendMessageCommand}"
+                    Classes="PrimaryRounded"
+                    Margin="12,0,0,0"
+                    Padding="20,10"
+                    CornerRadius="6"
+                    FontWeight="SemiBold"
+                    FontSize="14"
+                    BorderThickness="0"/>
+        </Grid>
+
+    </Grid>
+
+</UserControl>

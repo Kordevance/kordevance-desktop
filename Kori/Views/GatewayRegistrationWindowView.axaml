@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:ic="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Kori.Views.GatewayRegistrationWindowView"
+             x:DataType="vm:GatewayRegistrationWindowViewModel"
+             x:CompileBindings="False">
+    
+    <Grid Background="#F7F7F8">
+
+        <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="30"
+                    MaxWidth="600">
+
+            <!-- Header -->
+            <StackPanel Orientation="Vertical" Spacing="8" HorizontalAlignment="Center">
+                <Label Content="Connect to Gateway"
+                       FontSize="27"
+                       Foreground="{DynamicResource Brush.Text.Primary}"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+
+                <TextBlock Text="{root:Localize Gateway.EstablishingConnection}"
+                           FontSize="14"
+                           Foreground="{DynamicResource Brush.Text.Secondary}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Card -->
+            <Border Background="White"
+                    CornerRadius="12"
+                    Padding="24"
+                    BorderBrush="#E5E5E7"
+                    BorderThickness="1"
+                    BoxShadow="0 2 8 0 #14000000">
+
+                <StackPanel Orientation="Vertical" Spacing="16">
+
+                    <!-- Gateway IP input -->
+                    <StackPanel Orientation="Vertical" Spacing="8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ic:MaterialIcon Kind="Router" 
+                                             IconSize="20"
+                                             Foreground="{DynamicResource Brush.Text.Primary}"/>
+                            
+                            <TextBlock Text="{root:Localize Gateway.Config}"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                        </StackPanel>
+
+                        <TextBox
+                                 Text="{Binding GatewayAddress}"
+                                 PlaceholderText="{root:Localize Gateway.Address}"
+                                 IsReadOnly="{Binding IsGatewayAddressSectionReadonly}"
+                                 Classes="Default"
+                                 Padding="12,10"
+                                 FontSize="14"
+                                 CornerRadius="6"
+                                 BorderBrush="#D0D0D5"
+                                 BorderThickness="1" />
+                        
+                        <TextBox
+                            Text="{Binding VerificationCode}"
+                            PlaceholderText="{root:Localize Gateway.Code}"
+                            IsVisible="{Binding IsVerificationCodeSectionVisible}"
+                            Classes="Default"
+                            Padding="12,10"
+                            FontSize="14"
+                            CornerRadius="6"
+                            BorderBrush="#D0D0D5"
+                            BorderThickness="1" />
+                        
+                    </StackPanel>
+
+                    <!-- Info banner -->
+                    <Border Background="#AFCDC3"
+                            CornerRadius="8"
+                            Padding="16,12">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <ic:MaterialIcon Kind="InfoCircle" IconSize="20"/>
+
+                            <TextBlock Text="{root:Localize Gateway.EnsureReachable}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"
+                                       Foreground="#3D4A4A"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Connect button -->
+                    <Button Content="{root:Localize Connect}"
+                            Command="{Binding TestGatewayConnectionCommand}"
+                            Classes="PrimaryRounded"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Padding="0,12"
+                            CornerRadius="6"
+                            FontWeight="SemiBold"
+                            FontSize="14"
+                            BorderThickness="0">
+                    </Button>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </Grid>
+    
+</UserControl>

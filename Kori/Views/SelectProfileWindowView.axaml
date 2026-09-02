@@ -1,0 +1,194 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Kori.ViewModels"
+             xmlns:root="clr-namespace:Kori"
+             xmlns:ic="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:conv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Kori.Views.SelectProfileWindowView"
+             x:DataType="vm:SelectProfileWindowViewModel"
+             x:CompileBindings="False">
+
+    <Grid Background="#F7F7F8">
+
+        <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="30"
+                    MaxWidth="640">
+
+            <!-- Header: pick mode -->
+            <StackPanel Orientation="Vertical" Spacing="8" HorizontalAlignment="Center"
+                        IsVisible="{Binding !IsCreatingProfile}">
+                <Label Content="{root:Localize Profile.Select.Title}"
+                       FontSize="27"
+                       Foreground="{DynamicResource Brush.Text.Primary}"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+
+                <TextBlock Text="{root:Localize Profile.Select.Subtitle}"
+                           FontSize="14"
+                           Foreground="{DynamicResource Brush.Text.Secondary}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Header: create mode -->
+            <StackPanel Orientation="Vertical" Spacing="8" HorizontalAlignment="Center"
+                        IsVisible="{Binding IsCreatingProfile}">
+                <Label Content="{root:Localize Profile.Create.Title}"
+                       FontSize="27"
+                       Foreground="{DynamicResource Brush.Text.Primary}"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+
+                <TextBlock Text="{root:Localize Profile.Create.Subtitle}"
+                           FontSize="14"
+                           Foreground="{DynamicResource Brush.Text.Secondary}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Card: pick mode -->
+            <Border Background="White"
+                    CornerRadius="12"
+                    Padding="24"
+                    BorderBrush="#E5E5E7"
+                    BorderThickness="1"
+                    BoxShadow="0 2 8 0 #14000000"
+                    IsVisible="{Binding !IsCreatingProfile}">
+
+                <ScrollViewer MaxHeight="360"
+                              VerticalScrollBarVisibility="Hidden"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="TilesList" ItemsSource="{Binding Tiles}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="0">
+                                    <Button Command="{Binding ElementName=TilesList, Path=DataContext.TileClickedCommand}"
+                                            CommandParameter="{Binding Profile}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="12"
+                                            Cursor="Hand"
+                                            HorizontalContentAlignment="Center">
+                                        <StackPanel Orientation="Vertical" Spacing="10" Width="120">
+                                            <Border Width="72"
+                                                    Height="72"
+                                                    CornerRadius="36"
+                                                    Background="{DynamicResource Brush.Secondary}"
+                                                    HorizontalAlignment="Center">
+                                                <Panel>
+                                                    <ic:MaterialIcon Kind="Plus"
+                                                                     IconSize="30"
+                                                                     Foreground="{DynamicResource Brush.Tertiary}"
+                                                                     IsVisible="{Binding Profile, Converter={x:Static conv:ObjectConverters.IsNull}}"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+                                                    <ic:MaterialIcon Kind="Account"
+                                                                     IconSize="34"
+                                                                     Foreground="{DynamicResource Brush.Tertiary}"
+                                                                     IsVisible="{Binding Profile, Converter={x:Static conv:ObjectConverters.IsNotNull}}"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+                                                </Panel>
+                                            </Border>
+
+                                            <TextBlock Text="{root:Localize Profile.AddNew}"
+                                                       FontSize="14"
+                                                       FontWeight="Medium"
+                                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                                       HorizontalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       IsVisible="{Binding Profile, Converter={x:Static conv:ObjectConverters.IsNull}}"/>
+
+                                            <TextBlock Text="{Binding Profile.Name}"
+                                                       FontSize="14"
+                                                       FontWeight="Medium"
+                                                       Foreground="{DynamicResource Brush.Text.Primary}"
+                                                       HorizontalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       IsVisible="{Binding Profile, Converter={x:Static conv:ObjectConverters.IsNotNull}}"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border Width="1"
+                                            Margin="8,20"
+                                            Background="#E5E5E7"
+                                            IsVisible="{Binding !IsLast}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Border>
+
+            <!-- Card: create mode -->
+            <Border Background="White"
+                    CornerRadius="12"
+                    Padding="40"
+                    MinWidth="440"
+                    BorderBrush="#E5E5E7"
+                    BorderThickness="1"
+                    BoxShadow="0 2 8 0 #14000000"
+                    IsVisible="{Binding IsCreatingProfile}">
+
+                <StackPanel Orientation="Vertical" Spacing="16">
+
+                    <StackPanel Orientation="Vertical" Spacing="8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ic:MaterialIcon Kind="AccountPlus"
+                                             IconSize="20"
+                                             Foreground="{DynamicResource Brush.Text.Primary}"/>
+
+                            <TextBlock Text="{root:Localize Profile.Name.Label}"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       Foreground="{DynamicResource Brush.Text.Primary}"/>
+                        </StackPanel>
+
+                        <TextBox Text="{Binding Name}"
+                                 PlaceholderText="{root:Localize Profile.Name}"
+                                 Classes="Default"
+                                 Padding="12,10"
+                                 FontSize="14"
+                                 CornerRadius="6"
+                                 BorderBrush="#D0D0D5"
+                                 BorderThickness="1" />
+                    </StackPanel>
+
+                    <Button Content="{root:Localize Profile.CreateButton}"
+                            Command="{Binding CreateProfileCommand}"
+                            Classes="PrimaryRounded"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Padding="0,12"
+                            CornerRadius="6"
+                            FontWeight="SemiBold"
+                            FontSize="14"
+                            BorderThickness="0"/>
+
+                    <Button Content="{root:Localize Profile.Back}"
+                            Command="{Binding ShowProfileListCommand}"
+                            IsVisible="{Binding HasProfiles}"
+                            Classes="TextButton"
+                            HorizontalAlignment="Center"
+                            Padding="0,6"
+                            FontSize="13"/>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+    </Grid>
+
+</UserControl>
